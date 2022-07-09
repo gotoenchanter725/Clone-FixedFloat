@@ -1792,16 +1792,28 @@ function() {
     },
     api: function(t, e, n, o, i) {
         e = e || {};
-        var r = UI.func.toFormData(e);
+        // var r = UI.func.toFormData(e);
+        var r = e;
         i && i instanceof AbortController || (i = n && n instanceof AbortController ? n : APP.apiAbortController);
         let a = !0,
             s = !1,
             l = !1,
             c = new Promise(function(e, n) {
-                fetch("/ajax/" + t, {
+                var formBody = [];
+                for (var property in r) {
+                var encodedKey = encodeURIComponent(property);
+                var encodedValue = encodeURIComponent(r[property]);
+                formBody.push(encodedKey + "=" + encodedValue);
+                }
+                formBody = formBody.join("&");
+                fetch("http://localhost:831/" + t, {
                     method: "POST",
-                    body: r,
-                    signal: i.signal
+                    body: formBody,
+                    cache: 'no-cache',
+                    signal: i.signal,
+                    headers: {
+                      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                    },
                 }).then(function(t) {
                     return 200 !== t.status ? (s = !0, a = !1, void n({
                         code: 1,
