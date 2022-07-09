@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ExchangeController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/welcome', function () {
     return view('welcome');
 });
+
+Route::get('/', [ExchangeController::class, 'index']);
+Route::get('/order/{id}', [OrderController::class, 'page']);
+
+Route::post("/exchangePrice", [ExchangeController::class, 'exchangePrice']);
+Route::post("/exchangeAddressInfo", [ExchangeController::class, 'exchangeAddressInfo']);
+Route::post("/exchangeMake", [ExchangeController::class, 'exchangeMake']);
