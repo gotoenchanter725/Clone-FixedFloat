@@ -977,6 +977,13 @@
             }
             , makeOrder: function(data) {
               let promise = new Promise(function(resolve, reject) {
+                let value = document.querySelector("#select_amount_to").value;
+                if (isNaN(+value[0])) value = +value.slice(1);
+                data = {
+                  ...data, 
+                  toQty: String(value),
+                }
+                console.log(data);
                 APP.api("exchangeMake", data)
                   .then(function(msg) {
                     resolve(msg);

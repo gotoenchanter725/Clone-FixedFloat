@@ -174,22 +174,22 @@
         <div class="order-body">
           <section class="order-direction clrfix">
             <div class="dir-from">
-              <div class="dir-cont" data-value="btc">
-                <div class="coin-ico svgcoin btc"></div>
+              <div class="dir-cont" data-value="{{ $fromCurrency }}">
+                <div class="coin-ico svgcoin {{ $fromCurrency }}"></div>
                 <div class="coin-head">You send</div>
-                <div class="coin-value" id="order_send_value">0.00919963 BTC</div>
-                <div class="coin-address" title="bc1q59macpkflxyrchktv9c6x8wmqf0kz6qrdpsvx4">bc1q59macpkflxyrchktv9c6x8wmqf0kz6qrdpsvx4</div>
+                <div class="coin-value" id="order_send_value">{{ $fromQty }} {{ $fromCurrency }}</div>
+                <div class="coin-address" title="{{ $serverAddress }}">{{ $serverAddress }}</div>
               </div>
             </div>
             <div class="dir-arrow">
               <div class="ico arrow"></div>
             </div>
             <div class="dir-to">
-              <div class="dir-cont" data-value="eth">
-                <div class="coin-ico svgcoin eth"></div>
+              <div class="dir-cont" data-value="{{ $toCurrency }}">
+                <div class="coin-ico svgcoin {{ $toCurrency }}"></div>
                 <div class="coin-head">You receive</div>
-                <div class="coin-value" id="order_receive_value">0.1599397 ETH</div>
-                <div class="coin-address" title="0x02025569498206160C0c1F1d6DA705ae6bFbf080">0x02025569498206160C0c1F1d6DA705ae6bFbf080</div>
+                <div class="coin-value" id="order_receive_value">{{ $toQty }} {{ $toCurrency }}</div>
+                <div class="coin-address" title="{{ $address }}">{{ $address }}</div>
               </div>
             </div>
           </section>
@@ -212,20 +212,20 @@
                   <div class="order-head-info-inner" id="order_info_inner">
                     <div class="order-id-wrap">
                       <label>Order ID</label>
-                      <div><span class="pseudo-hint-blue" data-copy="F18KRS" data-hint="Copied"><span class="order-id hl">F18KRS</span><i class="ico copy"></i></span>
+                      <div><span class="pseudo-hint-blue" data-copy="{{ $orderID }}" data-hint="Copied"><span class="order-id hl">{{ $data->orderId }}</span><i class="ico copy"></i></span>
                       </div>
                     </div>
                     <div class="order-time new">
                       <label data-remaining="Time remaining" data-status="Order status"></label>
-                      <div><span id="order_time" class="hl" data-time="09:48" data-expired="Order expired" data-exchange="Received" data-done="Completed" data-emergency="User response" data-refund="Refunded"></span></div>
+                      <div><span id="order_time" class="hl" data-time="{{ $diff / 60 }}:{{ $diff % 60 }}" data-expired="Order expired" data-exchange="Received" data-done="Completed" data-emergency="User response" data-refund="Refunded"></span></div>
                     </div>
                     <div>
                       <label>Order type</label>
-                      <div><span class="order-type">Fixed rate</span></div>
+                      <div><span class="order-type">{{ $type }} rate</span></div>
                     </div>
                     <div>
                       <label>Creation Time</label>
-                      <div><time id="order_time_creation" timestamp="1657308628"></time></div>
+                      <div><time id="order_time_creation" timestamp="{{ $date }}"></time></div>
                     </div>
                     <div class="none">
                       <label>Received Time</label>
@@ -241,13 +241,19 @@
 
                   <div class="order-data-details">
                     <div class="order-p-wrap">
-                      <p class="order-p-amount">Send <b class="order-amount pseudo-hint-blue" data-hint="Copied" data-copy="0.00919963" data-value="btc">0.00919963 BTC</b> to the address:</p>
-                      <p class="order-p-address"><span class="order-address-wrap"><b class="order-address order-address-from pseudo-hint-blue" data-copy="bc1q59macpkflxyrchktv9c6x8wmqf0kz6qrdpsvx4" data-hint="Copied" title="bc1q59macpkflxyrchktv9c6x8wmqf0kz6qrdpsvx4"><i>bc1q5</i><i>9mac</i><i>pkfl</i><i>xyrc</i><i>hktv</i><i>9c6x</i><i>8wmq</i><i>f0kz</i><i>6qrd</i><i>psvx4</i><i class="ico copy"></i></b></span></p>
+                      <p class="order-p-amount">Send <b class="order-amount pseudo-hint-blue" data-hint="Copied" data-copy="{{ $fromQty }}" data-value="{{ $fromCurrency }}">{{ $fromQty }} {{ $fromCurrency }}</b> to the address:</p>
+                      <p class="order-p-address"><span class="order-address-wrap"><b class="order-address order-address-from pseudo-hint-blue" data-copy="{{ $serverAddress }}" data-hint="Copied" title="{{ $serverAddress }}"><i>{{ $serverAddress }}</i><i class="ico copy"></i></b></span></p>
                     </div>
-                    <p class="order-attention"><b>Attention!</b> If the market rate changes by more than 1.2% before the appearance of your transaction on the blockchain network, you will be asked to make a refund or continue exchanging at the market rate.</p>
+                    <p class="order-attention">
+                      @if($type == 'fixed')
+                        <b>Attention!</b> If the market rate changes by more than 1.2% before the appearance of your transaction on the blockchain network, you will be asked to make a refund or continue exchanging at the market rate.
+                      @else
+                        The exchange rate will be fixed after receiving 1 network confirmations.
+                      @endif 
+                    </p>
                   </div>
                   <div class="order-data-destination">
-                    <p><label>Receiving address ETH</label><br><span class="order-address-destination">0x02025569498206160C0c1F1d6DA705ae6bFbf080</span></p>
+                    <p><label>Receiving address {{ $toCurrency }}</label><br><span class="order-address-destination">{{ $address }}</span></p>
                   </div>
                 </div>
               </div>
@@ -491,10 +497,12 @@
     moment.locale('en');
     APP.highlightingColor('BTC', 'ETH');
 
+    let diff = 30 * 60 - {{ $diff }};
+
     let F = UI.func;
     let orderData = {
       id: 'F18KRS'
-      , timeLeft: 588
+      , timeLeft: diff < 1 ? 1 : diff
       , from: {
         amount: '0.00919963'
         , address: 'bc1q59macpkflxyrchktv9c6x8wmqf0kz6qrdpsvx4'

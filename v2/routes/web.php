@@ -24,4 +24,4 @@ Route::get('/order/{id}', [OrderController::class, 'page']);
 
 Route::post("/exchangePrice", [ExchangeController::class, 'exchangePrice']);
 Route::post("/exchangeAddressInfo", [ExchangeController::class, 'exchangeAddressInfo']);
-Route::post("/exchangeMake", [ExchangeController::class, 'exchangeMake']);
+Route::post("/exchangeMake", [OrderController::class, 'exchangeMake']);

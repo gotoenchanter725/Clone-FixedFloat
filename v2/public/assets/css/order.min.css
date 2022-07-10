@@ -842,7 +842,7 @@ b.extra-required {
 }
 
 .order-address>i {
-    display: inline-block;
+    display: inline;
     font-style: normal
 }
 
