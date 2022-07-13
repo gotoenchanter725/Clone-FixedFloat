@@ -1,7 +1,8 @@
 <html>
 
 <head>
-  <title>Fixed Float - @yield('title')</title>
+  {{-- <title>Fixed Float - @yield('title')</title> --}}
+  <title>Fixed Float</title>
   @section('meta')
   <meta charset="UTF-8" />
   <meta name="_token" value="{{ csrf_token() }}">

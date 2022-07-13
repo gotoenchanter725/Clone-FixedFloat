@@ -199,9 +199,9 @@
                 <div class="order-qr-wrap" id="order_qr">
                   <div class="order-qr">
                     <input type="radio" id="qr_type0" name="qr_switcher">
-                    <div class="order-qrcode" href="#"><img src="https://chart.googleapis.com/chart?chs=400x400&amp;cht=qr&amp;chl={{ $fromCurrency }}:{{ $address }}&amp;choe=UTF-8" alt="QR code"></div>
+                    <div class="order-qrcode" href="#"><img src="https://chart.googleapis.com/chart?chs=400x400&amp;cht=qr&amp;chl={{ $fromCurrency }}:{{ $serverAddress }}&amp;choe=UTF-8" alt="QR code"></div>
                     <input type="radio" id="qr_type1" name="qr_switcher" checked>
-                    <div class="order-qrcode" href="#"><img src="https://chart.googleapis.com/chart?chs=400x400&amp;cht=qr&amp;chl={{ $fromCurrency }}:{{ $address }}?amount={{ $fromQty }}&amp;choe=UTF-8" alt="QR code"></div>
+                    <div class="order-qrcode" href="#"><img src="https://chart.googleapis.com/chart?chs=400x400&amp;cht=qr&amp;chl={{ $fromCurrency }}:{{ $serverAddress }}?amount={{ $fromQty }}&amp;choe=UTF-8" alt="QR code"></div>
                     <div class="qr-switcher" data-count="2">
                       <label for="qr_type0"><span>Address</span></label>
                       <label for="qr_type1"><span>With amount</span></label>
