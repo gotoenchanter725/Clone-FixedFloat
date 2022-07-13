@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExchangeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\QrCodeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +26,5 @@ Route::get('/order/{id}', [OrderController::class, 'page']);
 Route::post("/exchangePrice", [ExchangeController::class, 'exchangePrice']);
 Route::post("/exchangeAddressInfo", [ExchangeController::class, 'exchangeAddressInfo']);
 Route::post("/exchangeMake", [OrderController::class, 'exchangeMake']);
+
+Route::get('qrcode', [QrCodeController::class, 'generateQrCode']);

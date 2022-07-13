@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use App\Models\Order;
+use App\Models\AddressByCurrency;
 
 class OrderController extends Controller
 {
@@ -21,9 +22,11 @@ class OrderController extends Controller
         $now = date_create();
         $create_date = date_create($data->created_at);
         $diff = $now->getTimestamp() - $create_date->getTimestamp();
-
+        echo $data->fromCurrency . "\n";
+        $server_address = "";
+        $rst = AddressByCurrency::where('currency', $data->fromCurrency)->first();
         $send = $data;
-        $send->serverAddress = "bc1q59macpkflxyrchktv9c6x8wmqf0kz6qrdpsvx41111111111";
+        $send->serverAddress = $rst->address;
         $send->diff = $diff;
         $send->date = $now->getTimestamp();
         return view('order')
@@ -34,7 +37,7 @@ class OrderController extends Controller
             ->with('toQty', $data->toQty)
             ->with('type', $data->type)
             ->with('address', $data->toAddress)
-            ->with('serverAddress', "bc1q59macpkflxyrchktv9c6x8wmqf0kz6qrdpsvx41111111111")
+            ->with('serverAddress', $rst->address)
             ->with('diff', $diff)
             ->with('date', $now->getTimestamp())
             ->with('data', $send);
