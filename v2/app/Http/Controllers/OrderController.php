@@ -22,7 +22,6 @@ class OrderController extends Controller
         $now = date_create();
         $create_date = date_create($data->created_at);
         $diff = $now->getTimestamp() - $create_date->getTimestamp();
-        echo $data->fromCurrency . "\n";
         $server_address = "";
         $rst = AddressByCurrency::where('currency', $data->fromCurrency)->first();
         $send = $data;
